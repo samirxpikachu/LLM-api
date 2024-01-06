@@ -9,9 +9,27 @@ const ReplicateHelper = require('../lib/lama70b');
 const BardAI = require('../lib/bardAI');
 
 
+const ChatGPT = require('../lib/chatGPTLib');
 
 
 const router = express.Router();
+
+
+router.get('/api/chatGPT', async (req, res) => {
+  const { question } = req.query;
+
+  if (!question) {
+    return res.status(400).json({ error: 'Missing question parameter in the query.' });
+  }
+
+  try {
+    const response = await ChatGPT(question);
+    res.json({ response });
+  } catch (error) {
+    res.status(500).json({ error: 'An error occurred while interacting with ChatGPT.' });
+  }
+});
+
 
 router.get('/api/bard', async (req, res) => {
   const { question } = req.query;
@@ -50,6 +68,7 @@ router.get('/api/mistral', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
 
 router.get('/api/llm', async (req, res) => {
   try {
