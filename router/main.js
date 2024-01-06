@@ -1,7 +1,6 @@
 const express = require('express');
 const ReplicateService = require('../lib/Mistral');
 
-const llmLib = require('../lib/llmLib');
 
 
 const ReplicateHelper = require('../lib/lama70b');
@@ -69,22 +68,6 @@ router.get('/api/mistral', async (req, res) => {
   }
 });
 
-
-router.get('/api/llm', async (req, res) => {
-  try {
-    const userPrompt = req.query.query;
-
-    if (!userPrompt) {
-      return res.status(400).json({ error: 'Missing "query" parameter' });
-    }
-
-    const result = await llmLib.generateLLMResponse(userPrompt);
-    res.json({ response: result });
-  } catch (error) {
-    console.error('Error generating LLM response:', error.message);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
 
 
 
